@@ -1,0 +1,15 @@
+6.04 Прочитать про потоки
+https://www.personal.kent.edu/~rmuhamma/OpSystems/Myos/threads.htm
+https://www.geeksforgeeks.org/multithreading-c-2/
+
+
+Проверки
+https://disk.yandex.ru/d/NuM00M7WHXI7Zw
+https://drive.google.com/file/d/1O72sE8_ASWzwa6qQqK9Gf8GQty3H1UVO/view // с ошибкой
+
+11.04 
+https://www.youtube.com/watch?v=WzsPbwIwtiw
+1:13:00 про вилки
+
+12.04 
+https://www.youtube.com/watch?v=_x2WHLXApDE полезная проверка
