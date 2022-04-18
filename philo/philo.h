@@ -21,7 +21,7 @@
 
 typedef struct timeval t_timeval;
 typedef pthread_mutex_t t_mutex;
-typedef struct t_philo;
+typedef struct s_philo t_philo;
 
 typedef struct s_fork
 {
@@ -31,25 +31,31 @@ typedef struct s_fork
 
 typedef struct s_all
 {
-	unsigned int	n_philos;
-	unsigned int	time_to_die;
-	unsigned int	time_to_eat;
-	unsigned int	time_to_sleep;
-	unsigned int	must_eat;
+	int				n_philos;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	int				must_eat;
+	unsigned long	start_time;
 	t_fork			*forks;
 	t_philo			*philos;
 }	t_all;
 
 typedef struct s_philo
 {
-	pthread_t	t_id;
-	int			id;
-	int			ate;
-	t_fork		left;
-	t_fork		right;
-	t_all		p_all;
+	pthread_t		t_id;
+	int				id;
+	int				ate;
+	unsigned long	time;
+	t_fork			left;
+	t_fork			right;
+	t_all			all;
 }	t_philo;
 
-int	ft_atoi(const char *str, int *_res);
+int				ft_atoi(const char *str, int *_res);
+void			ft_start(t_all *all);
+int				ft_exit(t_all *all);
+int				ft_clear(t_all *all);
+unsigned long	ft_time(void);
 
 #endif
