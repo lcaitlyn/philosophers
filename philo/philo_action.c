@@ -12,46 +12,45 @@
 
 #include "philo.h"
 
-void	ft_putnbr(int n)
+void	ft_fork(t_philo *philo)
 {
-	unsigned int	nb;
-	char			c;
-
-	if (n == -2147483648)
+	printf ("L %d [%x]\n", philo->id, (unsigned int)&philo->l);
+	printf ("R %d [%x]\n", philo->id, (unsigned int)&philo->r);
+/*	if (philo->left.id < philo->right.id)
 	{
-		write (1, "-2147483648", 11);
-		return ;
+		
+		if (!pthread_mutex_lock(&philo->left.mutex))
+			printf("%lu %d has taken a left fork\n", ft_time() - philo->time,
+				philo->id);
+		if (!pthread_mutex_lock(&philo->right.mutex))
+			printf("%lu %d has taken a right fork\n", ft_time() - philo->time,
+				philo->id);
 	}
-	else if (n < 0)
+	else
 	{
-		write (1, "-", 1);
-		n = n * -1;
-	}
-	else if (n > 2147483647)
-	{
-		write (1, "2", 1);
-		n = 147483647;
-	}
-	nb = (unsigned int)n;
-	if (n > 9)
-		ft_putnbr(nb / 10);
-	c = (char )(nb % 10 + 48);
-	write (1, &c, 1);
+		pthread_mutex_lock(&philo->right.mutex);
+		printf("%lu %d has taken a right fork\n", ft_time() - philo->time,
+			   philo->id);
+		pthread_mutex_lock(&philo->left.mutex);
+		printf("%lu %d has taken a left fork\n", ft_time() - philo->time,
+			   philo->id);
+	}*/
 }
-
+/*
+void	ft_eat(t_philo *philo)
+{
+	
+}
+*/
 void	*start(void *data)
 {
 	t_philo		*philo;
 
 	philo = (t_philo *)data;
 	philo->time = ft_time();
-	printf ("%lu id = %d\n",
-			philo->time - philo->all.start_time, philo->id);
-	sleep(1);
-	ft_putnbr(ft_time() - philo->all.start_time);
-	printf ("%lu id = %d\n",
-			ft_time() - philo->all.start_time, philo->id);
-	ft_putnbr(ft_time() - philo->all.start_time);
+	if (philo->id % 2 == 0)
+		usleep(100000);
+	ft_fork(philo);
 	return (0);
 }
 

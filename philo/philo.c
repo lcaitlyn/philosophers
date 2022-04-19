@@ -29,6 +29,7 @@ int	init_forks(t_all *all)
 			free (forks);
 			return (1);
 		}
+		printf ("%d [%x]\n", i, (unsigned int)&forks[i].mutex);
 		i++;
 	}
 	all->forks = forks;
@@ -48,8 +49,12 @@ int	init_philos(t_all *all)
 	{
 		philos[i].id = i + 1;
 		philos[i].ate = 0;
-		philos[i].left = all->forks[i];
-		philos[i].right = all->forks[(i + 1) % all->n_philos];
+		printf ("INIT %d [%x]\n", i, (unsigned int)&all->forks[i]);
+		philos[i].l = all->forks[i].mutex;
+		philos[i].r = all->forks[(i + 1) % all->n_philos].mutex;
+		printf ("MUTEX %d [%x]\n", i, (unsigned int)&all->forks[i].mutex);
+		philos[i].left = &all->forks[i];
+		philos[i].right = &all->forks[(i + 1) % all->n_philos];
 		i++;
 	}
 	all->philos = philos;

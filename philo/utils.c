@@ -52,8 +52,10 @@ int	ft_clear(t_all *all)
 
 unsigned long	ft_time(void)
 {
-	t_timeval	tv;
+	t_timeval		tv;
+	unsigned long	time;
 	
 	gettimeofday(&tv, 0);
-	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
+	time = tv.tv_sec * 1000 + (tv.tv_usec - tv.tv_usec % 100000) / 1000;
+	return (time);
 }
