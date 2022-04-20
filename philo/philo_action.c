@@ -14,34 +14,31 @@
 
 void	ft_fork(t_philo *philo)
 {
-	printf ("L %d [%x]\n", philo->id, (unsigned int)&philo->l);
-	printf ("R %d [%x]\n", philo->id, (unsigned int)&philo->r);
-/*	if (philo->left.id < philo->right.id)
+	if (philo->left->id < philo->right->id)
 	{
-		
-		if (!pthread_mutex_lock(&philo->left.mutex))
-			printf("%lu %d has taken a left fork\n", ft_time() - philo->time,
-				philo->id);
-		if (!pthread_mutex_lock(&philo->right.mutex))
-			printf("%lu %d has taken a right fork\n", ft_time() - philo->time,
-				philo->id);
+		pthread_mutex_lock(&philo->left->mutex);
+		pthread_mutex_lock(&philo->right->mutex);
 	}
 	else
 	{
-		pthread_mutex_lock(&philo->right.mutex);
-		printf("%lu %d has taken a right fork\n", ft_time() - philo->time,
-			   philo->id);
-		pthread_mutex_lock(&philo->left.mutex);
-		printf("%lu %d has taken a left fork\n", ft_time() - philo->time,
-			   philo->id);
-	}*/
+		pthread_mutex_lock(&philo->right->mutex);
+		pthread_mutex_lock(&philo->left->mutex);
+	}
+	printf("%lu %d has taken a fork\n", ft_time() - philo->time,
+		   philo->id);
+	printf("%lu %d has taken a fork\n", ft_time() - philo->time,
+		   philo->id);
 }
-/*
+
 void	ft_eat(t_philo *philo)
 {
-	
+	ft_fork(philo);
+	printf ("%lu %d is eating\n", ft_time() - philo->time, philo->id);
+	usleep (philo->all.time_to_eat * 1000);
+	pthread_mutex_unlock(&philo->right->mutex);
+	pthread_mutex_unlock(&philo->left->mutex);
 }
-*/
+
 void	*start(void *data)
 {
 	t_philo		*philo;
@@ -49,8 +46,14 @@ void	*start(void *data)
 	philo = (t_philo *)data;
 	philo->time = ft_time();
 	if (philo->id % 2 == 0)
-		usleep(100000);
-	ft_fork(philo);
+		usleep(2500);
+	while (1)
+	{
+		ft_eat(philo);
+		printf ("%lu %d is sleeping\n", ft_time() - philo->time, philo->id);
+		usleep(philo->all.time_to_sleep * 1000);
+		
+	}
 	return (0);
 }
 
