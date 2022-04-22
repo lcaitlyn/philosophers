@@ -29,7 +29,7 @@ void	*monitoring(void *data)
 	
 	while (1)
 	{
-		usleep(100);
+		usleep(all->time_to_die * 100);
 		i = 0;
 		while (i < all->n_philos)
 		{
@@ -40,7 +40,6 @@ void	*monitoring(void *data)
 				i = 0;
 				while (i < all->n_philos)
 				{
-					all->philos[i].status = 0;
 					pthread_mutex_destroy(&all->forks[i].mutex);
 					i++;
 				}

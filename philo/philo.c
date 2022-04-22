@@ -50,7 +50,7 @@ int	init_philos(t_all *all)
 		philos[i].ate = 0;
 		philos[i].left = &all->forks[i];
 		philos[i].right = &all->forks[(i + 1) % all->n_philos];
-		philos[i].status = 1;
+		pthread_mutex_init(&philos[i].status, 0);
 		i++;
 	}
 	all->philos = philos;

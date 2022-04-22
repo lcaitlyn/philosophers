@@ -48,7 +48,7 @@ typedef struct s_philo
 	int				id;
 	int				ate;
 	unsigned long	time;
-	int				status;
+	t_mutex			status;
 	t_fork			*left;
 	t_fork			*right;
 	t_all			*all;
