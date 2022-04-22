@@ -51,7 +51,7 @@ typedef struct s_philo
 	int				status;
 	t_fork			*left;
 	t_fork			*right;
-	t_all			all;
+	t_all			*all;
 }	t_philo;
 
 int				ft_atoi(const char *str, int *_res);
@@ -62,6 +62,6 @@ unsigned long	ft_time(void);
 void			start_monitoring(t_all *all);
 void			ft_print(t_all *all, unsigned long time, int id, char *str);
 int				philo_alive(t_philo *philo);
-void	*monitoring(void *data);
+void			*monitoring(void *data);
 
 #endif

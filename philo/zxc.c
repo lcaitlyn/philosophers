@@ -41,9 +41,13 @@ int main()
 
 void	*f(void *d)
 {
+	write (1, "helo\n", 5);
 	printf ("f %x\n", (unsigned)(t_mutex *)d);
+	printf ("lock\n");
 	pthread_mutex_lock((t_mutex *)d);
 	printf ("zxc\n");
+	printf ("unlock\n");
+	pthread_mutex_unlock((t_mutex *)d);
 	return 0;
 }
 
@@ -55,15 +59,18 @@ int main()
 	printf ("time = %lu ", time);
 	printf ("sec = %lu usec = %d [%lu]", tv.tv_sec * 1000, tv.tv_usec, tv.tv_sec - tv.tv_usec);*/
 	pthread_t	t_id;
+	pthread_t	t_id1;
 	
 	t_mutex fork;
 	
 	pthread_mutex_init(&fork, 0);
 	printf ("init %x\n", (unsigned)&fork);
-	pthread_create(&t_id, 0, f, (void *)&fork);
+	printf ("lock\n");
 	pthread_mutex_lock(&fork);
+	pthread_create(&t_id, 0, f, (void *)&fork);
+	pthread_create(&t_id1, 0, f, (void *)&fork);
+//	pthread_mutex_unlock(&fork);
 	printf ("main %x\n", (unsigned)&fork);
-	printf ("1\n");
 	pthread_join(t_id, 0);
 	return (0);
 }

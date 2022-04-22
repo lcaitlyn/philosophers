@@ -54,7 +54,6 @@ int	ft_clear(t_all *all)
 	}
 	free (all->forks);
 	free (all->philos);
-	printf ("qwe\n");
 	return (0);
 }
 
