@@ -1,6 +1,6 @@
 NAME		=	philo
 
-SRCS		= 	philo.c philo_action.c utils.c
+SRCS		= 	philo.c philo_action.c utils.c monitor.c
 
 OBJ			=	$(SRCS:%.c=%.o)
 

@@ -1,5 +1,5 @@
 #include "philo.h"
-
+/*
 t_fork	*init_forks(int size)
 {
 	t_fork	*forks;
@@ -37,4 +37,12 @@ int main()
 	if (!pthread_mutex_lock(&forks[0].mutex))
 		printf ("x\n");\
 	return 0;
+}*/
+
+int main()
+{
+	t_timeval	tv;
+	unsigned long time = tv.tv_sec * 1000 + (tv.tv_usec - tv.tv_usec % 100000) / 1000;
+	printf ("time = %lu ", time);
+	printf ("sec = %lu usec = %d [%lu]", tv.tv_sec * 1000, tv.tv_usec, tv.tv_sec - tv.tv_usec);
 }

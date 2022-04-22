@@ -37,6 +37,7 @@ typedef struct s_all
 	int				time_to_sleep;
 	int				must_eat;
 	unsigned long	start_time;
+	t_mutex			cout;
 	t_fork			*forks;
 	t_philo			*philos;
 }	t_all;
@@ -47,6 +48,7 @@ typedef struct s_philo
 	int				id;
 	int				ate;
 	unsigned long	time;
+	int				status;
 	t_fork			*left;
 	t_fork			*right;
 	t_all			all;
@@ -57,5 +59,7 @@ void			ft_start(t_all *all);
 int				ft_exit(t_all *all);
 int				ft_clear(t_all *all);
 unsigned long	ft_time(void);
+void			start_monitoring(t_all *all);
+void			ft_print(t_all *all, unsigned long time, int id, char *str);
 
 #endif
