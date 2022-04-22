@@ -39,10 +39,31 @@ int main()
 	return 0;
 }*/
 
+void	*f(void *d)
+{
+	printf ("f %x\n", (unsigned)(t_mutex *)d);
+	pthread_mutex_lock((t_mutex *)d);
+	printf ("zxc\n");
+	return 0;
+}
+
+
 int main()
 {
-	t_timeval	tv;
+/*	t_timeval	tv;
 	unsigned long time = tv.tv_sec * 1000 + (tv.tv_usec - tv.tv_usec % 100000) / 1000;
 	printf ("time = %lu ", time);
-	printf ("sec = %lu usec = %d [%lu]", tv.tv_sec * 1000, tv.tv_usec, tv.tv_sec - tv.tv_usec);
+	printf ("sec = %lu usec = %d [%lu]", tv.tv_sec * 1000, tv.tv_usec, tv.tv_sec - tv.tv_usec);*/
+	pthread_t	t_id;
+	
+	t_mutex fork;
+	
+	pthread_mutex_init(&fork, 0);
+	printf ("init %x\n", (unsigned)&fork);
+	pthread_create(&t_id, 0, f, (void *)&fork);
+	pthread_mutex_lock(&fork);
+	printf ("main %x\n", (unsigned)&fork);
+	printf ("1\n");
+	pthread_join(t_id, 0);
+	return (0);
 }

@@ -45,8 +45,16 @@ int	ft_exit(t_all *all)
 
 int	ft_clear(t_all *all)
 {
+	
+	int i = 0;
+	while (i < all->n_philos)
+	{
+		pthread_mutex_destroy(&all->forks[i].mutex);
+		i++;
+	}
 	free (all->forks);
 	free (all->philos);
+	printf ("qwe\n");
 	return (0);
 }
 

@@ -14,6 +14,7 @@
 
 void	ft_print(t_all *all, unsigned long time, int id, char *str)
 {
+	printf ("print cout = %x\n", (unsigned)&all->cout);
 	pthread_mutex_lock(&all->cout);
 	printf("%lu %d %s\n", ft_time() - all->start_time, id, str);
 	pthread_mutex_unlock(&all->cout);
@@ -28,16 +29,30 @@ void	*monitoring(void *data)
 	int i = 0;
 	while (1)
 	{
-		
-		if (all->philos[i].status)
+		i = 0;
+		while (i < all->n_philos)
 		{
-			pthread_mutex_lock (&all->cout);
-			all->philos[i].ate = all->must_eat;
-			return (0);
+			if (!(philo_alive(&all->philos[i])))
+			{
+				printf ("cout = %x\n", (unsigned)&all->cout);
+				
+				ft_print(all, all->philos[i].time, all->philos[i].id, "died");
+				pthread_mutex_lock(&all->cout);
+				i = 0;
+				while (i < all->n_philos)
+				{
+					all->philos[i].status = 0;
+					printf ("%d d\n", i);
+					pthread_mutex_destroy(&all->forks[i].mutex);
+					i++;
+				}
+				pthread_mutex_destroy(&all->cout);
+				return 0;
+			}
+			i++;
 		}
-		if (i >= all->n_philos - 1)
-			i = -1;
-		i++;
+//		printf ("status %d = %d\n", all->philos->id, all->philos[i].status);
+		
 	}
 	return (0);
 }

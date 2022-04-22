@@ -61,5 +61,7 @@ int				ft_clear(t_all *all);
 unsigned long	ft_time(void);
 void			start_monitoring(t_all *all);
 void			ft_print(t_all *all, unsigned long time, int id, char *str);
+int				philo_alive(t_philo *philo);
+void	*monitoring(void *data);
 
 #endif

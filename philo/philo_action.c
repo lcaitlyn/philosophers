@@ -14,15 +14,20 @@
 
 int	philo_alive(t_philo *philo)
 {
-	printf ("i = %d T = %lu, T_2_D = %d\n", philo->id, ft_time() - philo->time, philo->all.time_to_die);
+	pthread_mutex_lock(&philo->all.cout);
+/*	printf ("i = %d T = %lu, T_2_D = %d status = %d\n", philo->id, ft_time() - philo->time, philo->all.time_to_die, philo->status); */
 	if (ft_time() - philo->time >= philo->all.time_to_die)
 	{
-		return (0);
 		philo->status = 1;
-		pthread_mutex_lock(&philo->all.cout);
+		pthread_mutex_unlock(&philo->all.cout);
+		return (0);
 	}
 	else
+	{
+		pthread_mutex_unlock(&philo->all.cout);
 		return (1);
+	}
+		
 }
 
 void	ft_fork(t_philo *philo)
@@ -66,29 +71,11 @@ void	*start(void *data)
 		ft_print(&philo->all, philo->time, philo->id, "is thinking");
 	}
 	int i = 0;
-	while (i != philo->all.must_eat)
+	while (i != philo->all.must_eat && philo->status)
 	{
-		if (!philo_alive(philo))
-		{
-			ft_print(&philo->all, philo->time, philo->id, "died");
-			pthread_mutex_lock (&philo->all.cout);
-			return (0);
-		}
 		ft_eat(philo);
-		if (!philo_alive(philo))
-		{
-			ft_print(&philo->all, philo->time, philo->id, "died");
-			pthread_mutex_lock (&philo->all.cout);
-			return (0);
-		}
 		ft_print(&philo->all, philo->time, philo->id, "is sleeping");
 		usleep(philo->all.time_to_sleep * 1000);
-		if (!philo_alive(philo))
-		{
-			ft_print(&philo->all, philo->time, philo->id, "died");
-			pthread_mutex_lock (&philo->all.cout);
-			return (0);
-		}
 		ft_print(&philo->all, philo->time, philo->id, "is thinking");
 		i++;
 	}
@@ -97,6 +84,8 @@ void	*start(void *data)
 
 void	ft_start(t_all *all)
 {
+	pthread_t	p_id;
+	t_mutex		m;
 	int	i;
 
 	i = 0;
@@ -108,12 +97,15 @@ void	ft_start(t_all *all)
 		pthread_create(&all->philos[i].t_id, 0, start, (void *)&all->philos[i]);
 		i++;
 	}
-	start_monitoring(all);
+	pthread_create(&p_id, 0, monitoring, (void *)all);
+//	start_monitoring(all);
 	i = 0;
 	while (i < all->n_philos)
 	{
+		
 		pthread_join(all->philos[i].t_id, 0);
 		i++;
 	}
-	
+	pthread_join(p_id, 0);
+//	pthread_mutex_unlock(&all->cout);
 }
