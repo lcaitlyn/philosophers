@@ -19,6 +19,19 @@ void	ft_print(t_all *all, unsigned long time, int id, char *str)
 	pthread_mutex_unlock(&all->cout);
 }
 
+int	philo_alive(t_philo *philo)
+{
+	pthread_mutex_lock(&philo->status);
+	if (ft_time() - philo->time > philo->all->time_to_die)
+	{
+		pthread_mutex_lock(&philo->all->cout);
+		pthread_mutex_unlock(&philo->status);
+		return (0);
+	}
+	pthread_mutex_unlock(&philo->status);
+	return (1);
+}
+
 void	*monitoring(void *data)
 {
 	t_all	*all;
@@ -29,14 +42,15 @@ void	*monitoring(void *data)
 	
 	while (1)
 	{
-		usleep(all->time_to_die * 100);
+		usleep(all->time_to_die - 100);
 		i = 0;
 		while (i < all->n_philos)
 		{
 			if (!(philo_alive(&all->philos[i])))
 			{
-				ft_print(all, all->philos[i].time, all->philos[i].id, "died");
-				pthread_mutex_lock(&all->cout);
+				
+				printf("%lu %d died\n", ft_time() - all->start_time, all->philos[i].id);
+//				pthread_mutex_lock(&all->cout);
 				i = 0;
 				while (i < all->n_philos)
 				{

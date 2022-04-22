@@ -12,19 +12,7 @@
 
 #include "philo.h"
 
-int	philo_alive(t_philo *philo)
-{
-//	printf ("lock avive %x", (unsigned)&philo->status);
-	pthread_mutex_lock(&philo->status);
-//	printf ("i = %d T = %lu, T_2_D = %d status = %d\n", philo->id, ft_time() - philo->time, philo->all->time_to_die, philo->status);
-	if (ft_time() - philo->time > philo->all->time_to_die)
-	{
-		pthread_mutex_unlock(&philo->status);
-		return (0);
-	}
-	pthread_mutex_unlock(&philo->status);
-	return (1);
-}
+
 
 void	ft_fork(t_philo *philo)
 {
@@ -53,6 +41,9 @@ void	ft_eat(t_philo *philo)
 	philo->time = ft_time();
 	pthread_mutex_unlock(&philo->status);
 	usleep (philo->all->time_to_eat * 1000);
+	int j = ft_time();
+/*	while ((int)(ft_time - j) < philo->all->time_to_eat)
+		usleep(100);*/
 	pthread_mutex_unlock(&philo->right->mutex);
 	pthread_mutex_unlock(&philo->left->mutex);
 }
@@ -60,6 +51,8 @@ void	ft_eat(t_philo *philo)
 void	*start(void *data)
 {
 	t_philo		*philo;
+	int			i;
+	int			j;
 
 	philo = (t_philo *)data;
 	pthread_mutex_lock(&philo->status);
@@ -70,11 +63,14 @@ void	*start(void *data)
 		usleep(2500);
 		ft_print(philo->all, philo->time, philo->id, "is thinking");
 	}
-	int i = 0;
+	i = 0;
 	while (i != philo->all->must_eat)
 	{
 		ft_eat(philo);
 		ft_print(philo->all, philo->time, philo->id, "is sleeping");
+		j = ft_time();
+/*		while ((int)(ft_time - j) < philo->all->time_to_eat)
+			usleep(330);*/
 		usleep(philo->all->time_to_sleep * 1000);
 		ft_print(philo->all, philo->time, philo->id, "is thinking");
 		i++;
@@ -96,19 +92,11 @@ void	ft_start(t_all *all)
 	while (i < all->n_philos)
 	{
 		all->philos[i].all = all;
-		pthread_create(&t_id, 0, start, (void *)&all->philos[i]);
-		pthread_detach(t_id);
+		pthread_create(&all->philos[i].t_id, 0, start, (void *)&all->philos[i]);
+		pthread_detach(all->philos[i].t_id);
 		i++;
 	}
 	pthread_create(&p_id, 0, monitoring, (void *)all);
-//	start_monitoring(all);
 	i = 0;
-/*	while (i < all->n_philos)
-	{
-		
-		pthread_join(all->philos[i].t_id, 0);
-		i++;
-	}*/
 	pthread_join(p_id, 0);
-//	pthread_mutex_unlock(&all->cout);
 }

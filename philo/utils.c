@@ -63,6 +63,7 @@ unsigned long	ft_time(void)
 	unsigned long	time;
 	
 	gettimeofday(&tv, 0);
-	time = tv.tv_sec * 1000 + (tv.tv_usec - tv.tv_usec % 100000) / 1000;
-	return (time);
+	return (time = tv.tv_sec * 1000 + tv.tv_usec / 1000);
+/*	time = tv.tv_sec * 1000 + (tv.tv_usec - tv.tv_usec % 100000) / 1000;
+	return (time);*/
 }
