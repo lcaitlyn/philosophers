@@ -3,6 +3,8 @@ https://www.personal.kent.edu/~rmuhamma/OpSystems/Myos/threads.htm
 https://www.geeksforgeeks.org/multithreading-c-2/
 
 
+./philo 2 200 100 100 3 | grep "eating" | wc -l | awk '{printf $1/2}'
+
 Проверки
 https://disk.yandex.ru/d/NuM00M7WHXI7Zw
 https://drive.google.com/file/d/1O72sE8_ASWzwa6qQqK9Gf8GQty3H1UVO/view // с ошибкой
@@ -17,3 +19,11 @@ https://www.youtube.com/watch?v=_x2WHLXApDE полезная проверка
 18.04 Начать разрабатывать действия философов
 
 19.04 Разобраться с мютексом. Почему не закрывает (а точнее почему не то передает)
+
+20.04 Сделать чтобы вилки брались одновременно (вывод сообщения)
+	сделать смерть философа
+	Разобраться почему он не закрывает вывод при помощи мютекс Лока
+
+22.04
+	Сделать ./philo 5 800 200 200
+	

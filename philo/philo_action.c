@@ -12,7 +12,14 @@
 
 #include "philo.h"
 
+void	my_usleep(long long argv)
+{
+	long long	time;
 
+	time = ft_time();
+	while (argv > ft_time() - time)
+		usleep(500);
+}
 
 void	ft_fork(t_philo *philo)
 {
@@ -39,11 +46,11 @@ void	ft_eat(t_philo *philo)
 	ft_print(philo->all, philo->time, philo->id, "is eating");
 	pthread_mutex_lock(&philo->status);
 	philo->time = ft_time();
+	
+	philo->ate++;
+	my_usleep (philo->all->time_to_eat);
 	pthread_mutex_unlock(&philo->status);
-	usleep (philo->all->time_to_eat * 1000);
-	int j = ft_time();
-/*	while ((int)(ft_time - j) < philo->all->time_to_eat)
-		usleep(100);*/
+//	usleep (philo->all->time_to_eat * 1000);
 	pthread_mutex_unlock(&philo->right->mutex);
 	pthread_mutex_unlock(&philo->left->mutex);
 }
@@ -58,20 +65,15 @@ void	*start(void *data)
 	pthread_mutex_lock(&philo->status);
 	philo->time = ft_time();
 	pthread_mutex_unlock(&philo->status);
-	if (philo->id % 2 == 0)
-	{
-		usleep(2500);
-		ft_print(philo->all, philo->time, philo->id, "is thinking");
-	}
 	i = 0;
 	while (i != philo->all->must_eat)
 	{
 		ft_eat(philo);
 		ft_print(philo->all, philo->time, philo->id, "is sleeping");
-		j = ft_time();
-/*		while ((int)(ft_time - j) < philo->all->time_to_eat)
-			usleep(330);*/
-		usleep(philo->all->time_to_sleep * 1000);
+//		usleep(philo->all->time_to_sleep * 1000);
+		pthread_mutex_lock(&philo->status);
+		my_usleep(philo->all->time_to_sleep);
+		pthread_mutex_unlock(&philo->status);
 		ft_print(philo->all, philo->time, philo->id, "is thinking");
 		i++;
 	}
@@ -91,6 +93,7 @@ void	ft_start(t_all *all)
 	pthread_mutex_init(&all->cout, 0);
 	while (i < all->n_philos)
 	{
+		usleep(1);
 		all->philos[i].all = all;
 		pthread_create(&all->philos[i].t_id, 0, start, (void *)&all->philos[i]);
 		pthread_detach(all->philos[i].t_id);
