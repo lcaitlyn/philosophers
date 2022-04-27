@@ -19,9 +19,9 @@
 # include <stdlib.h>
 # include <sys/time.h>
 
-typedef struct timeval t_timeval;
-typedef pthread_mutex_t t_mutex;
-typedef struct s_philo t_philo;
+typedef struct timeval	t_timeval;
+typedef pthread_mutex_t	t_mutex;
+typedef struct s_philo	t_philo;
 
 typedef struct s_fork
 {
@@ -57,11 +57,11 @@ typedef struct s_philo
 
 int				ft_atoi(const char *str, int *_res);
 void			ft_start(t_all *all);
-int				ft_exit(t_all *all);
+int				ft_exit(t_all *all, int i);
 int				ft_clear(t_all *all);
 unsigned long	ft_time(void);
 void			start_monitoring(t_all *all);
-void			ft_print(t_all *all, unsigned long time, int id, char *str);
+void			ft_print(t_all *all, int id, char *str);
 int				philo_alive(t_philo *philo);
 void			*monitoring(void *data);
 
