@@ -4,7 +4,7 @@ SRCS		= 	philo.c philo_action.c utils.c monitor.c
 
 OBJ			=	$(SRCS:%.c=%.o)
 
-FLAGS		=	-Wall -Wextra -Werror -pthread#-fsanitize=thread
+FLAGS		=	-Wall -Wextra -Werror -pthread #-fsanitize=thread
 
 .PHONY		:	all clean fclean re
 

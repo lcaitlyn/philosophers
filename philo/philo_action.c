@@ -46,8 +46,8 @@ void	ft_eat(t_philo *philo)
 	pthread_mutex_lock(&philo->status);
 	philo->time = ft_time();
 	philo->ate++;
-	my_usleep (philo->all->time_to_eat);
 	pthread_mutex_unlock(&philo->status);
+	my_usleep (philo->all->time_to_eat);
 	pthread_mutex_unlock(&philo->right->mutex);
 	pthread_mutex_unlock(&philo->left->mutex);
 }
