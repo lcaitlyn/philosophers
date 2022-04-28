@@ -18,16 +18,11 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <sys/time.h>
+# include <semaphore.h>
+# include <signal.h>
 
-typedef struct timeval t_timeval;
-typedef pthread_mutex_t t_mutex;
-typedef struct s_philo t_philo;
-
-typedef struct s_fork
-{
-	int		id;
-	t_mutex	mutex;
-}	t_fork;
+typedef struct timeval	t_timeval;
+typedef struct s_philo	t_philo;
 
 typedef struct s_all
 {
@@ -37,31 +32,27 @@ typedef struct s_all
 	int				time_to_sleep;
 	int				must_eat;
 	unsigned long	start_time;
-	t_mutex			cout;
-	t_fork			*forks;
+	sem_t			*cout;
+	sem_t			*forks;
 	t_philo			*philos;
 }	t_all;
 
 typedef struct s_philo
 {
+	pid_t			p_id;
 	pthread_t		t_id;
 	int				id;
 	int				ate;
-	int				done;
 	unsigned long	time;
-	t_mutex			status;
-	t_fork			*left;
-	t_fork			*right;
 	t_all			*all;
 }	t_philo;
 
 int				ft_atoi(const char *str, int *_res);
 void			ft_start(t_all *all);
-int				ft_exit(t_all *all);
+int				ft_exit(int i);
 int				ft_clear(t_all *all);
 unsigned long	ft_time(void);
-void			start_monitoring(t_all *all);
-void			ft_print(t_all *all, unsigned long time, int id, char *str);
+void			ft_print(t_all *all, int id, char *str);
 int				philo_alive(t_philo *philo);
 void			*monitoring(void *data);
 

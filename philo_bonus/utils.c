@@ -37,23 +37,45 @@ int	ft_atoi(const char *str, int *_res)
 	return (0);
 }
 
-int	ft_exit(t_all *all)
+int	ft_exit(int i)
 {
-	free(all->forks);
-	return (1);
+	if (i)
+		printf ("Error: Malloc error with philos\n");
+	else
+	{
+		printf ("Error! Wrong arguments\n./philo ");
+		printf ("[number_of_philosophers] [time_to_die] [time_to_eat] ");
+		printf ("[time_to_sleep] {number_of_times_each_philosopher_must_eat}\n");
+	}
+	exit (1);
 }
 
 int	ft_clear(t_all *all)
 {
-	
-	int i = 0;
-	while (i < all->n_philos)
+	int	status;
+	int	i;
+
+	status = 0;
+	i = -1;
+	while (++i < all->n_philos)
 	{
-		pthread_mutex_destroy(&all->forks[i].mutex);
-		i++;
+		waitpid(-1, &status, 0);
+		if (status != 0)
+		{
+			i = 0;
+			while (i < all->n_philos)
+			{
+				kill(all->philos[i].p_id, SIGKILL);
+				i++;
+			}
+			break ;
+		}
 	}
-	free (all->forks);
-	free (all->philos);
+	sem_close(all->forks);
+	sem_close(all->cout);
+	sem_unlink("forks");
+	sem_unlink("cout");
+	free(all->philos);
 	return (0);
 }
 
@@ -61,9 +83,7 @@ unsigned long	ft_time(void)
 {
 	t_timeval		tv;
 	unsigned long	time;
-	
+
 	gettimeofday(&tv, 0);
 	return (time = tv.tv_sec * 1000 + tv.tv_usec / 1000);
-/*	time = tv.tv_sec * 1000 + (tv.tv_usec - tv.tv_usec % 100000) / 1000;
-	return (time);*/
 }
