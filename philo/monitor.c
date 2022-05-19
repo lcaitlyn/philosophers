@@ -35,7 +35,7 @@ int	philo_alive(t_philo *philo)
 			pthread_mutex_destroy(&philo->all->forks[i].mutex);
 			i++;
 		}
-		pthread_mutex_destroy(&philo->all->cout);
+		//pthread_mutex_destroy(&philo->all->cout);
 		pthread_mutex_unlock(&philo->status);
 		return (0);
 	}
